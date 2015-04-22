@@ -1,6 +1,9 @@
 Antipatterns
 ============
 
+Most of those are antipatterns in the Python programming language, but some of
+them might be more generic.
+
 Strict email validation
 -----------------------
 
@@ -93,4 +96,98 @@ Good:
 def get(color=None):
     if color:
         return Toasters.filter_by(color=color)
+```
+
+Repeating function name in docstring
+------------------------------------
+
+Bad:
+
+```python
+def test_return_true_if_toast_is_valid():
+    """Verify that we return true if toast is valid."""
+    assert is_valid(Toast('brioche')) is true
+```
+
+Why is it bad?
+
+* The docstring and function name are not DRY.
+* There's no actual explanation of what valid means.
+
+Good:
+
+```python
+def test_valid_toast():
+    """Verify that 'brioche' are valid toasts."""
+    assert is_valid(Toast('brioche')) is true
+```
+
+Or, another variation:
+
+```python
+def test_brioche_are_valid_toast():
+    assert is_valid(Toast('brioche')) is true
+```
+
+Bare try... except...
+---------------------
+
+Raising unrelated/unspecific exception
+--------------------------------------
+
+Most languages have all predefined exceptions, including Python. It is
+important to make sure that the right exception is raised from a semantic
+standpoint.
+
+Bad:
+
+```python
+def validate(toast):
+    if isinstance(toast, Brioche):
+        # RuntimeError is too broad
+        raise RuntimeError('Invalid toast')
+
+
+def validate(toast):
+    if isinstance(toast, Brioche):
+        # SystemError should only be used for internal interpreter errors
+        raise SystemError('Invalid toast')
+```
+
+Good:
+
+```python
+def validate(toast):
+    if isinstance(toast, Brioche):
+        raise TypeError('Invalid toast')
+```
+
+`TypeError` is here perfectly meaningful, and clearly convey the context around
+the error.
+
+Redundant type checking in Python
+---------------------------------
+
+Bad:
+
+```python
+def toast(bread):
+    if bread is None:
+        raise TypeError('Need bread to toast.')
+    if bread.is_toastable:
+        toaster.toast(bread)
+```
+
+In this case, checking against `None` is totally useless because in the next
+line, `bread.is_toastable` would raise `AttributeError: 'NoneType' object has
+no attribute 'is_toastable'`. This is not a general rule, but in this case
+I would definitely argue that adding the type checks hurts readability and adds
+very little value to the function.
+
+Good:
+
+```python
+def toast(bread):
+    if bread.is_toastable:
+        toaster.toast(bread)
 ```
