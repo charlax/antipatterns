@@ -73,3 +73,24 @@ toaster.restart()
 * Using `TODO` is an ubiquitous pattern that allows easy grepping and plays
   nice with most text editors.
 * The perceived quality of this temporary fix is much higher.
+
+Repeating arguments in function name
+------------------------------------
+
+Bad:
+
+```python
+def get_by_color(color):
+    return Toasters.filter_by(color=color)
+```
+
+Putting the argument name in both the function name and in arguments is, in
+most cases and for most interpreted languages, redundant.
+
+Good:
+
+```python
+def get(color=None):
+    if color:
+        return Toasters.filter_by(color=color)
+```
