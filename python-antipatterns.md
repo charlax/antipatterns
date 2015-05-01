@@ -27,3 +27,9 @@ def toast(bread):
     if bread.is_toastable:
         toaster.toast(bread)
 ```
+
+Restricting version in setup.py dependencies
+--------------------------------------------
+
+Reference: [setup.py vs.
+requirements.txt](https://caremad.io/2013/07/setup-vs-requirement/)
