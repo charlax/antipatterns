@@ -58,3 +58,8 @@ Bad:
 def toaster_exists(toaster_id, session):
     ...
 ```
+
+Implicit transaction handling
+-----------------------------
+
+TODO

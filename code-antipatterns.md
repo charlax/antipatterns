@@ -166,3 +166,33 @@ def validate(toast):
 
 `TypeError` is here perfectly meaningful, and clearly convey the context around
 the error.
+
+Unreadable response construction
+--------------------------------
+
+TODO
+
+Bad:
+
+```python
+def get_data():
+    returned = {}
+    if stuff:
+        returned['toaster'] = 'toaster'
+    if other_stuff:
+        if the_other_stuff:
+            returned['toast'] = 'brioche'
+    else:
+        returned['toast'] = 'bread'
+    return returned
+```
+
+Good:
+
+```python
+def get_data():
+    returned = {
+        'toaster': '',
+        'toast': '',
+    }
+```

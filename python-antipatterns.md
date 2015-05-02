@@ -33,3 +33,13 @@ Restricting version in setup.py dependencies
 
 Reference: [setup.py vs.
 requirements.txt](https://caremad.io/2013/07/setup-vs-requirement/)
+
+Unwieldy if... else instead of dict
+-----------------------------------
+
+TODO
+
+Overreliance on kwargs
+----------------------
+
+TODO
