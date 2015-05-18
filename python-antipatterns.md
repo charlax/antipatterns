@@ -43,3 +43,18 @@ Overreliance on kwargs
 ----------------------
 
 TODO
+
+Overreliance on list/dict comprehensions
+----------------------------------------
+
+TODO
+
+Mutable default arguments
+-------------------------
+
+TODO
+
+Reference
+---------
+
+* [Pythonic Pitfalls](http://nafiulis.me/potential-pythonic-pitfalls.html)
