@@ -196,3 +196,64 @@ def get_data():
         'toast': '',
     }
 ```
+
+Undeterministic tests
+---------------------
+
+When testing function that don't behave deterministically, it can be tempting
+to run them multiple time and average their results.
+
+Bad:
+
+```python
+def function():
+    if random.random() > .4:
+        return True
+    else:
+        return False
+
+
+def test_function():
+    number_of_true = 0
+    for _ in xrange(1000):
+        returned = function()
+        if returned:
+            number_of_true += 1
+
+    assert 30 < number_of_true < 50
+```
+
+There are multiple things that are wrong with this approach:
+
+* This is a flaky test. Theoretically, this test could still fail.
+* This example is simple enough, but `function` might be doing some
+  computationally expensive task, which would make this test severely
+  inefficient.
+* The test is quite difficult to understand.
+
+Good:
+
+```python
+@mock.patch('random.random')
+def test_function(mock_random):
+    mock_random.return_value = 0.7
+    assert function() is True
+```
+
+This is a deterministic test that clearly tells what's going on.
+
+Unbalanced boilerplate
+----------------------
+
+One thing to strive for in libraries is have as little boilerplate as possible,
+but not less.
+
+Not enough boilerplate: you'll spend hours trying to understand specific
+behaviors that are too magical/implicit. You will need flexibility and you
+won't be able to get it,
+
+Too much boilerplate: users of your library will be stuck using outdated
+patterns. Users will write library to generate the boilerplate required by your
+library.
+
+I think Flask and SQLAlchemy do a very good job at keeping this under control.
