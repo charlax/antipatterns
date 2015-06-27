@@ -86,6 +86,41 @@ def put_in_toaster(bread):
     breadd.color = 'light_brown'  # Note the typo that would be hidden
 ```
 
+The following full example:
+
+```python
+from collections import namedtuple
+
+Bread = namedtuple('Bread', 'color')
+
+class ToastException(Exception):
+    pass
+
+def toast(bread):
+    try:
+        put_in_toaster(bread)
+    except:
+        raise ToastException('Could not toast bread')
+
+
+def put_in_toaster(bread):
+    brad.color = 'light_brown'  # Note the typo
+
+
+toast(Bread('yellow'))
+```
+
+Will raise this cryptic and impossible to debug error:
+
+```
+Traceback (most recent call last):
+  File "python-examples/reraise_exceptions.py", line 19, in <module>
+    toast(Bread('yellow'))
+  File "python-examples/reraise_exceptions.py", line 12, in toast
+    raise ToastException('Could not toast bread')
+__main__.ToastException: Could not toast bread
+```
+
 This simple example will evidently be even more painful in a large codebase.
 
 Good:
