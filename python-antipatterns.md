@@ -54,6 +54,50 @@ Mutable default arguments
 
 TODO
 
+Unnecessarily re-raising exceptions
+-----------------------------------
+
+Bad:
+
+```python
+def toast(bread):
+    try:
+        put_in_toaster(bread)
+    except:  # or except Exception as e
+        raise ToastException('Could not toast bread')
+```
+
+There's two problems with this implementation:
+
+* We're unconditionally catching all exceptions without being restrictive.
+  Let's say that `put_in_toaster` is undefined. Instead of giving proper
+  feedback to the developer, we will reraise `ToastException`.
+* We're hiding what's happening in `put_in_toaster`. Let's say there's
+  a programmer error in `put_in_toaster` (for instance, an undefined variable).
+  Instead of getting an immediate feedback, this will be reraised as
+  `ToastException`, and the developer will waste hours trying to find where the
+  exception was raised.
+
+Here's an example `put_in_toaster` implementation. In this case, the typo would
+be hidden by the bare `try... except`:
+
+```python
+def put_in_toaster(bread):
+    breadd.color = 'light_brown'  # Note the typo that would be hidden
+```
+
+This simple example will evidently be even more painful in a large codebase.
+
+Good:
+
+```python
+def toast(bread):
+    try:
+        put_in_toaster(bread)
+    except InvalidBreadType as e:
+        raise ToastException('Cannot toast this bread type')
+```
+
 Reference
 ---------
 
