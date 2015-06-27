@@ -123,7 +123,8 @@ __main__.ToastException: Could not toast bread
 
 This simple example will evidently be even more painful in a large codebase.
 
-Good:
+This is a better pattern because we're very selective about the exception we
+catch:
 
 ```python
 def toast(bread):
@@ -131,6 +132,32 @@ def toast(bread):
         put_in_toaster(bread)
     except InvalidBreadType as e:
         raise ToastException('Cannot toast this bread type')
+```
+
+This is another good pattern. Because we're re-raising without a specific
+exception, the full traceback will be kept:
+
+```python
+def toast(bread):
+    try:
+        put_in_toaster(bread)
+    except:
+        print 'Got exception while trying to toast'
+        raise  # note the absence of specific exception
+```
+
+Here's what would happen:
+
+```
+Got exception while trying to toast
+Traceback (most recent call last):
+  File "reraise_exceptions_good.py", line 20, in <module>
+    toast(Bread('yellow'))
+  File "reraise_exceptions_good.py", line 10, in toast
+    put_in_toaster(bread)
+  File "reraise_exceptions_good.py", line 17, in put_in_toaster
+    brad.color = 'light_brown'  # Note the typo
+NameError: global name 'brad' is not defined
 ```
 
 Reference
