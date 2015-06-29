@@ -31,8 +31,26 @@ def toast(bread):
 Restricting version in setup.py dependencies
 --------------------------------------------
 
-Reference: [setup.py vs.
+Read this article first: [setup.py vs.
 requirements.txt](https://caremad.io/2013/07/setup-vs-requirement/)
+
+The main point is that `setup.py` should not specify explicit version
+requirements (good: `flask`, bad: `flask==1.1.1`).
+
+In a few words, if library A requires `flask==1.1.1` and library B requires
+`flask==1.1.2`, then you'll have a conflict and won't be able to use them both
+in application Z. Yet in 99.999% of the cases, you don't need a specific
+version of flask, so A should just require `flask` in `setup.py` (no version
+specified), B should just require `flask` in `setup.py` (same), and Z will be
+happy using A and B with whatever version of flask it wants (this specific
+version will be in `requirements.txt`, usually apps don't really need to
+maintain dependencies in both `setup.py` and `requirements.txt`, only
+`requirements.txt` is usually used). Then the developers of A can put whatever
+version of flask they're currently developing against in A's
+`requirements.txt`.
+
+Ruby has a pretty similar dichotomy with [Gemspec and
+gemfile](http://yehudakatz.com/2010/12/16/clarifying-the-roles-of-the-gemspec-and-gemfile/).
 
 Unwieldy if... else instead of dict
 -----------------------------------
