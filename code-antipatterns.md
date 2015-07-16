@@ -63,6 +63,8 @@ There's multiple things wrong with this comment:
   (`git blame`).
 * This does not explain why it's temporary.
 * It's impossible to easily grep for temporary fixes.
+* [Louis de Funès](https://en.wikipedia.org/wiki/Louis_de_Fun%C3%A8s) would never
+  write a hack.
 
 Good:
 
