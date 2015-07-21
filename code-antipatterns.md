@@ -252,10 +252,66 @@ but not less.
 
 Not enough boilerplate: you'll spend hours trying to understand specific
 behaviors that are too magical/implicit. You will need flexibility and you
-won't be able to get it,
+won't be able to get it. Boilerplate is useful insofar as it increases
+[transparency](http://www.catb.org/esr/writings/taoup/html/ch01s06.html).
 
 Too much boilerplate: users of your library will be stuck using outdated
 patterns. Users will write library to generate the boilerplate required by your
 library.
 
 I think Flask and SQLAlchemy do a very good job at keeping this under control.
+
+Inconsistent use of verbs in functions
+--------------------------------------
+
+Bad:
+
+```python
+def get_toasters(color):
+    """Get a bunch of toasters."""
+    return filter(lambda toaster: toaster.color == color, TOASTERS)
+
+
+def find_toaster(id_):
+    """Return a single toaster."""
+    toasters = filter(lambda toaster: toaster.id == id_, TOASTERS)
+    assert len(toasters) == 1
+    return toasters[1]
+
+
+def find_toasts(color):
+    """Find a bunch of toasts."""
+    return filter(lambda toast: toast.color == color, TOASTS)
+```
+
+The use of verb is inconsistent in this example. `get` is used to return
+a possibly empty list of toasters, and `find` is used to return a single
+toaster (or raise an exception) in the second function or a possibly empty list
+of toasts in the third function.
+
+This is based on personal taste but I have the following rule:
+
+* `get` prefixes function that return at most one object (they either return
+  none or raise an exception depending on the cases)
+* `find` prefixes function that return a possibly empty list (or iterable) of
+  objects.
+
+Good:
+
+```python
+def find_toasters(color):
+    """Find a bunch of toasters."""
+    return filter(lambda toaster: toaster.color == color, TOASTERS)
+
+
+def get_toaster(id_):
+    """Return a single toaster."""
+    toasters = filter(lambda toaster: toaster.id == id_, TOASTERS)
+    assert len(toasters) == 1
+    return toasters[1]
+
+
+def find_toasts(color):
+    """Find a bunch of toasts."""
+    return filter(lambda toast: toast.color == color, TOASTS)
+```
