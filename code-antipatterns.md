@@ -315,3 +315,44 @@ def find_toasts(color):
     """Find a bunch of toasts."""
     return filter(lambda toast: toast.color == color, TOASTS)
 ```
+
+Opaque function arguments
+-------------------------
+
+A few variants of what I consider bad code:
+
+```python
+def create(toaster_params):
+    name = toaster_params['name']
+    color = toaster_params.get('color', 'red')
+
+
+class Toaster(object):
+
+    def __init__(self, params):
+        self.name = params['name']
+
+
+# Probably the worst of all
+def create2(**args, **kwargs):
+    name = kwargs['name']
+```
+
+Why is this bad?
+
+* It's really easy to make a mistake, especially in interpreted languages such
+  as Python. For instance, if I call `create({'name': 'hello', 'ccolor':
+  'blue'})`, I won't get any error, but the color won't be the one I expect.
+* It increases cognitive load, as I have to understand where the object is
+  coming from to introspect its content.
+* It makes the job of static analyzer harder or impossible.
+
+Granted, this pattern is sometimes required (for instance when the number of
+params is too large, or when dealing with pure data).
+
+A better way is to be explicit:
+
+```python
+def create(name, color='red'):
+    pass  # ...
+```
