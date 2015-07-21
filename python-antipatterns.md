@@ -178,6 +178,14 @@ Traceback (most recent call last):
 NameError: global name 'brad' is not defined
 ```
 
+Using `is` to compare objects
+-----------------------------
+
+TODO
+
+[Why you should almost never use “is” in
+Python](http://blog.lerner.co.il/why-you-should-almost-never-use-is-in-python/)
+
 Reference
 ---------
 

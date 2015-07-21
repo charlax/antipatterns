@@ -136,6 +136,8 @@ Bare try... except...
 
 TODO
 
+[Bare try... except..., the most diabolical Python antipattern](https://realpython.com/blog/python/the-most-diabolical-python-antipattern/)
+
 Raising unrelated/unspecific exception
 --------------------------------------
 
