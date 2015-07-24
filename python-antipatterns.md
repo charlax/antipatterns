@@ -55,7 +55,57 @@ gemfile](http://yehudakatz.com/2010/12/16/clarifying-the-roles-of-the-gemspec-an
 Unwieldy if... else instead of dict
 -----------------------------------
 
-TODO
+Bad:
+
+```python
+import operator as op
+
+
+def get_operator(value):
+    """Return operator function based on string.
+
+    e.g. ``get_operator('+')`` returns a function which takes two arguments
+    and return the sum of them.
+    """
+    if value == '+':
+        return op.add
+    elif value == '-':
+        return op.sub
+    elif value == '*':
+        return op.mul
+    elif value == '/':
+        return op.div
+    else:
+        raise ValueError('Unknown operator %s' % value)
+```
+
+Note: the operator module is a standard library modules that defines base
+operator functions. For instance `operator.add(1, 1) == 2`.
+
+This huge switch-like expression will soon become really difficult to read and
+maintain. A more pythonic way is to use a dict to store the mapping.
+
+Good:
+
+```
+import operator as op
+
+OPERATORS = {
+    '+': op.add,
+    '-': op.sub,
+    '*': op.mul,
+    '/': op.div,
+}
+
+
+def get_operator(value):
+    """Return operator function based on string."""
+    operator = OPERATORS.get(value)
+    if operator:
+        return operator
+    else:
+        raise ValueError('Unknown operator %s' % value)
+```
 
 Overreliance on kwargs
 ----------------------
