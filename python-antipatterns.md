@@ -87,7 +87,7 @@ maintain. A more pythonic way is to use a dict to store the mapping.
 
 Good:
 
-```
+```python
 import operator as op
 
 OPERATORS = {
