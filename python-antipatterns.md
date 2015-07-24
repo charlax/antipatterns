@@ -85,6 +85,11 @@ operator functions. For instance `operator.add(1, 1) == 2`.
 This huge switch-like expression will soon become really difficult to read and
 maintain. A more pythonic way is to use a dict to store the mapping.
 
+Another reason is that to get 100% line and branch coverage, you will have to
+create as many tests as you have mappings. Yet you could consider that the
+value to operator mapping is part of the codebase's configuration, not its
+behavior, and thus shouldn't be tested.
+
 Good:
 
 ```python
