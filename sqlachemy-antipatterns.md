@@ -63,3 +63,48 @@ Implicit transaction handling
 -----------------------------
 
 TODO
+
+Loading the full object when checking for object existence
+----------------------------------------------------------
+
+Bad:
+
+```python
+def toaster_exists(toaster_id):
+    return bool(session.query(Toaster).filter_by(id=toaster_id).first())
+```
+
+This is inefficient because it:
+
+* Queries all the columns from the database (including any eagerly loaded joins)
+* Instantiates and maps all data on the Toaster model
+
+The database query would look something like this. You can see that all columns
+are selected to be loaded by the ORM.
+
+```sql
+SELECT toasters.id AS toasters_id, toasters.name AS toasters_name,
+toasters.color AS toasters_color
+FROM toasters
+WHERE toasters.id = 1
+ LIMIT 1 OFFSET 0
+```
+
+And then it just checks if the result is truthy.
+
+Here's a better way to do it:
+
+```python
+def toaster_exists(toaster_id):
+    query = session.query(Toaster).filter_by(id=toaster_id)
+    return session.query(query.exists()).scalar()
+```
+
+In this case, we just ask the database about whether a record exists with this
+id. This is obviously much more efficient.
+
+```sql
+SELECT EXISTS (SELECT 1
+FROM toasters
+WHERE toasters.id = 1) AS anon_1
+```
