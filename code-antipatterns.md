@@ -358,3 +358,39 @@ A better way is to be explicit:
 def create(name, color='red'):
     pass  # ...
 ```
+
+Hiding formatting
+-----------------
+
+Bad:
+
+```python
+# main.py
+
+from utils import format_query
+
+
+def get_user(user_id):
+    url = get_url(user_id)
+    return requests.get(url)
+
+
+# utils.py
+
+
+def get_url(user_id):
+    return 'http://127.0.0.1/users/%s' % user_id
+```
+
+I consider this an antipattern because it hides the request formatting from the
+developer, making it more complex to see what `url` look like. In this extreme
+example, the formatting function is a one-liner which sounds a bit overkill for
+a function.
+
+Good:
+
+```python
+def get_user(user_id):
+    url = 'http://127.0.0.1/users/%s' % user_id
+    return requests.get(url)
+```
