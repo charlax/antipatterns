@@ -24,7 +24,47 @@ TODO
 Over-reliance on centralized fixtures
 -------------------------------------
 
-TODO
+Bad:
+
+```python
+# fixtures.py
+toaster = Toaster(color='black')
+toaster_with_color_blue = Toaster(color='blue')
+toaster_with_color_red = Toaster(color='red')
+
+
+# test.py
+from fixtures import toaster, toaster_with_color_blue
+
+
+def test_stuff():
+    toaster_with_color_blue.toast('brioche')
+```
+
+The problem with centralized fixtures is that they tend to grow exponentially.
+Every single test case will have some specific fixtures requirements, and every
+single permutation will have its own fixture. This will make the fixture file
+really difficult to maintain.
+
+The other problem is that it will become very easy for two unrelated tests to
+use the same fixture. Now let's say one of those test's requirement changes,
+and you have to change the fixture as well. In that case, you might break the
+other test, which will slow you down and defeats the purpose of keeping test an
+efficient part of the developer flow.
+
+Lastly, this separate the setup and running part of the tests. It makes it more
+difficult for a new engineer to understand what is specific about this test's
+setup without having to open the ``fixtures`` file.
+
+Here's a more explicit way to do this. Most fixtures libraries allow you to
+override default parameters, so that you can make clear what setup is specific
+to each test.
+
+```python
+def test_stuff():
+    toaster_with_color_blue = Toaster(color='blue')
+    toaster_with_color_blue.toast('brioche')
+```
 
 Over-reliance on replaying external requests
 --------------------------------------------
