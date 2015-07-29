@@ -245,3 +245,6 @@ Reference
 ---------
 
 * [Pythonic Pitfalls](http://nafiulis.me/potential-pythonic-pitfalls.html)
+* [Python Patterns](https://github.com/faif/python-patterns)
+* [The Little Book of Python
+  Anti-Patterns](http://docs.quantifiedcode.com/python-anti-patterns/)
