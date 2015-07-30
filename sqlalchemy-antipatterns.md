@@ -108,3 +108,48 @@ SELECT EXISTS (SELECT 1
 FROM toasters
 WHERE toasters.id = 1) AS anon_1
 ```
+
+Using identity as comparator
+----------------------------
+
+Bad:
+
+```python
+toasters = session.query(Toaster).filter(Toaster.deleted_at is None).all()
+```
+
+Unfortunately this won't work at all. This query will return all toasters,
+including the one that were deleted.
+
+The way sqlalchemy works is that it overrides the magic comparison methods
+(`__eq__`, `__lt__`, etc.). All comparison methods can be overrode except the
+identity operator (`is`) which checks for objects identity.
+
+What this means is that expression `Toaster.deleted_at is None` will be
+immediately evaluated by the Python interpreter, and since (presumably)
+`Toaster.deleted_at` is a `sqlalchemy.orm.attributes.InstrumentedAttribute`,
+it's not `None` and thus it's equivalent to doing:
+
+```python
+toasters = session.query(Toaster).filter(True).all()
+```
+
+Which obviously renders the filter inoperable, and will return all records.
+
+There's two ways to fix it:
+
+```python
+toasters = session.query(Toaster).filter(Toaster.deleted_at == None).all()
+```
+
+Here we use the equality operator, which Python allows overriding. Behind the
+scene, Python calls `Toaster.deleted_at.__eq__(None)`, which gives SQLAlchemy
+the opportunity to return a comparator that when coerced to a string, will
+evaluate to `deleted_at is NULL`.
+
+Most linter will issue a warning for equality comparison against `None`, so you
+can also do (this is my preferred solution):
+
+```python
+toasters = session.query(Toaster).filter(Toaster.deleted_at.is_(None)).all()
+```
