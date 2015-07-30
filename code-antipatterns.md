@@ -321,7 +321,7 @@ def find_toasts(color):
 Opaque function arguments
 -------------------------
 
-A few variants of what I consider bad code:
+A few variants of what I consider code that is difficult to debug:
 
 ```python
 def create(toaster_params):
@@ -336,7 +336,7 @@ class Toaster(object):
 
 
 # Probably the worst of all
-def create2(**args, **kwargs):
+def create2(*args, **kwargs):
     name = kwargs['name']
 ```
 
