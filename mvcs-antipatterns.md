@@ -39,10 +39,11 @@ Design](http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/
 Evans, Eric (2003-08-22). Domain-Driven Design: Tackling Complexity in the
 Heart of Software. Pearson Education. Kindle Edition.
 
-In that case, the `UserToaster` does not map to anything the business is
-using. Using plain English, somebody might ask about "what toasters does user
-A owns?" or "who owns toaster B and since when?" Nobody would ask "give me the
-UserToaster for user A".
+Entity don't have to map the database at all. They should map the business. In
+that case, `UserToaster` does not map to anything the business is using.  Using
+plain English, somebody might ask about "what toasters does user A owns?" or
+"who owns toaster B and since when?" Nobody would ask "give me the UserToaster
+for user A".
 
 So in that case, I would recommend doing the following:
 
@@ -50,7 +51,9 @@ So in that case, I would recommend doing the following:
 * Put the association properties on the entity that makes sense, for instance
   `owned_since` would be on `Toaster`.
 * If filtering on association properties is required, put this logic in
-  repositories.
+  repositories. In plain English, you would for instance ask "give all the
+  toasters user A owned in December?", you wouldn't ask "give be all the
+  UserToaster for owned by user A in December".
 
 Note that Domain Driver Design recommends avoiding many-to-many relationships
 altogether:
