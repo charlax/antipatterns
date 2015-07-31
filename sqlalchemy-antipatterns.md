@@ -153,3 +153,6 @@ can also do (this is my preferred solution):
 ```python
 toasters = session.query(Toaster).filter(Toaster.deleted_at.is_(None)).all()
 ```
+
+See docs for
+[is_](http://docs.sqlalchemy.org/en/rel_1_0/core/sqlelement.html#sqlalchemy.sql.operators.ColumnOperators.is_).
