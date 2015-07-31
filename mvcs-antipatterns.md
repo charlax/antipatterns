@@ -39,7 +39,8 @@ Design](http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/
 Evans, Eric (2003-08-22). Domain-Driven Design: Tackling Complexity in the
 Heart of Software. Pearson Education. Kindle Edition.
 
-Entity don't have to map the database at all. They should map the business.
+Entities should model business processes, not persistence details
+([source](http://blog.sapiensworks.com/post/2013/05/13/7-Biggest-Pitfalls-When-Doing-Domain-Driven-Design.aspx/)).
 
 * In that case, `UserToaster` does not map to anything the business is using.
   Using plain English, somebody might ask about "what toasters does user
@@ -89,3 +90,17 @@ altogether:
 Evans, Eric (2003-08-22). Domain-Driven Design: Tackling Complexity in the
 Heart of Software (Kindle Locations 1642-1647). Pearson Education. Kindle
 Edition.
+
+Imposing a traversal direction is probably the best solution. In our example,
+it's not immediately evident which direction is the right one (a toaster being
+owned by a user, or a user owning a toasters), because that depends on what
+this application is doing. If we're working on an app that lets a connected
+user see their toasters, then we would force the relationship to be
+unidirectional user->toasters.
+
+Sources:
+
+* [7 Biggest Pitfalls When Doing Domain Driven
+  Design](http://blog.sapiensworks.com/post/2013/05/13/7-Biggest-Pitfalls-When-Doing-Domain-Driven-Design.aspx/)
+* [Domain-Driven Design: Tackling Complexity in the Heart of
+  Software](http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215)
