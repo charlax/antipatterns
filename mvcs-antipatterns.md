@@ -39,17 +39,33 @@ Design](http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/
 Evans, Eric (2003-08-22). Domain-Driven Design: Tackling Complexity in the
 Heart of Software. Pearson Education. Kindle Edition.
 
-Entity don't have to map the database at all. They should map the business. In
-that case, `UserToaster` does not map to anything the business is using.  Using
-plain English, somebody might ask about "what toasters does user A owns?" or
-"who owns toaster B and since when?" Nobody would ask "give me the UserToaster
-for user A".
+Entity don't have to map the database at all. They should map the business.
+
+* In that case, `UserToaster` does not map to anything the business is using.
+  Using plain English, somebody might ask about "what toasters does user
+  A owns?" or "who owns toaster B and since when?" Nobody would ask "give me
+  the UserToaster for user A".
+* The association table can be considered an implementation detail that should
+  not (in most cases) leak in the domain layer. All the code should be dealing
+  with the simpler logic of "user having toasters", not UserToaster objects
+  being an association between a user and a toaster. This makes the code more
+  intuitive and natural.
+* It will be easier to handle serializing a "user having toasters" than
+  serializing UserToaster association.
+* This will make it very easy to force the calling site to take care of some
+  business logic. For instance, you might be able to get all `UserToaster`, and
+  then filter on whether they were bought. You might be tempted to do that by
+  going through the `UserToaster` object and filtering those that have
+  `were_bought` to be True. At some point, you might be doing the same thing in
+  multiple places, which will decrease maintainability. If you were hiding that
+  logic in the repository, you wouldn't have that issue `find_bought_toasters`.
 
 So in that case, I would recommend doing the following:
 
 * Create a `User` and `Toaster` entity.
 * Put the association properties on the entity that makes sense, for instance
-  `owned_since` would be on `Toaster`.
+  `owned_since` would be on `Toaster`, even though in the database it's stored
+  on the association table.
 * If filtering on association properties is required, put this logic in
   repositories. In plain English, you would for instance ask "give all the
   toasters user A owned in December?", you wouldn't ask "give be all the
