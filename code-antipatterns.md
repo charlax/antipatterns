@@ -134,9 +134,115 @@ def test_brioche_are_valid_toast():
 Bare try... except...
 ---------------------
 
-TODO
+There are multiple variations of this anti-pattern:
 
-[Bare try... except..., the most diabolical Python antipattern](https://realpython.com/blog/python/the-most-diabolical-python-antipattern/)
+```python
+# Silence all exceptions
+def toast(bread):
+    try:
+        toaster = Toaster()
+        toaster.insert(bread)
+        toaster.toast()
+    except:
+        pass
+
+
+# Silence all exceptions
+def toast(bread):
+    try:
+        toaster = Toaster()
+        toaster.insert(bread)
+        toaster.toast()
+    except ValueError:
+        pass
+```
+
+It depends on the context but in most cases this is a bad pattern:
+
+* **Debugging** those silent errors will be really difficult, because they won't show up in logs and exception reporting tool such as Sentry.
+* **The user experience** will randomly degrade without anybody knowing about it, including the user.
+* **Identifying** those errors will be impossible. Say `do_stuff` does an HTTP request to another service, and that service starts misbehaving. There won't be any exception, any metric that will let you identify it.
+
+An article even named this [the most diabolical Python antipattern](https://realpython.com/blog/python/the-most-diabolical-python-antipattern/).
+
+Sometime it's tempting to think that graceful degradation is about silencing
+exception. It's not.
+
+* Graceful degradation needs to happen at the highest level of the code, so
+  that the user can get a very explicit error message (e.g.  "we're having
+  issues with X, please retry in a moment"). That requires knowing that there
+  was an error, which you can't tell if you're silencing the exception.
+* You need to know when graceful degradation happens. You also need to be
+  alerted. This requires adding monitoring (using something like statsd) and
+  logging (Python's `logger.exception` automatically adds the exception
+  stacktrace to the log message for instance).
+
+Here's a number a better ways to do this:
+
+**Log and create metrics**
+
+```python
+import statsd
+
+
+def toast(bread):
+    # Note: no exception handling here.
+    toaster = Toaster()
+    toaster.insert(bread)
+    toaster.toast()
+
+
+def main():
+    try:
+        toast('brioche')
+    except:
+        logger.exception('Could not toast bread')
+        statsd.count('toast.error', 1)
+```
+
+**Re-raise immediately**
+
+```python
+import statsd
+
+
+def toast(bread):
+    try:
+        toaster = Toaster()
+        toaster.insert(bread)
+        toaster.toast()
+    except:
+        raise ToastingException('Could not toast bread %r' % bread)
+
+
+def main():
+    # Note: no exception handling here
+    toast('brioche')
+```
+
+**Be very specific about the exception that are caught**
+
+```python
+import statsd
+
+
+def toast(bread):
+    try:
+        toaster = Toaster()
+    except ValueError:
+        # Note that even though we catch, we're still logging + creating
+        # a metric
+        logger.exception('Could not get toaster')
+        statsd.count('toaster.instantiate.error', 1)
+        return
+
+    toaster.insert(bread)
+    toaster.toast()
+
+
+def main():
+    toast('brioche')
+```
 
 Raising unrelated/unspecific exception
 --------------------------------------
