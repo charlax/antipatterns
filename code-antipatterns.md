@@ -206,6 +206,13 @@ def main():
         statsd.count('toast.error', 1)
 ```
 
+Note that knowing where to catch is very important too. If you're catching
+inside the `toast` function, you might be hiding things a caller would need to
+know. Since this function is not returning anything, how would you make the
+difference between a success and a failure? You can't. That's why you want to
+let it raise, and catch only in the caller, where you have the context to know
+how you'll handle the exception.
+
 **Re-raise immediately**
 
 ```python
