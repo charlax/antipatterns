@@ -147,7 +147,7 @@ def toast(bread):
         pass
 
 
-# Silence all exceptions
+# Silence some exceptions
 def toast(bread):
     try:
         toaster = Toaster()
@@ -173,9 +173,15 @@ exception. It's not.
   issues with X, please retry in a moment"). That requires knowing that there
   was an error, which you can't tell if you're silencing the exception.
 * You need to know when graceful degradation happens. You also need to be
-  alerted. This requires adding monitoring (using something like statsd) and
-  logging (Python's `logger.exception` automatically adds the exception
-  stacktrace to the log message for instance).
+  alerted if it happens too often. This requires adding monitoring (using
+  something like statsd) and logging (Python's `logger.exception` automatically
+  adds the exception stacktrace to the log message for instance). Silencing an
+  exception won't make the error go away: all things being equal, it's better
+  for something to break hard, than for an error to be silenced.
+
+In other words, ask yourself: would it be a problem if every single action was
+failing? If you're silencing the error, how would you know it's happening for
+every single action?
 
 Here's a number a better ways to do this:
 
