@@ -34,20 +34,33 @@ Restricting version in setup.py dependencies
 Read this article first: [setup.py vs.
 requirements.txt](https://caremad.io/2013/07/setup-vs-requirement/)
 
-The main point is that `setup.py` should not specify explicit version
-requirements (good: `flask`, bad: `flask==1.1.1`).
+**Summary: The main point is that `setup.py` should not specify explicit version
+requirements (good: `flask`, bad: `flask==1.1.1`).**
 
-In a few words, if library A requires `flask==1.1.1` and library B requires
-`flask==1.1.2`, then you'll have a conflict and won't be able to use them both
-in application Z. Yet in 99.999% of the cases, you don't need a specific
-version of flask, so A should just require `flask` in `setup.py` (no version
-specified), B should just require `flask` in `setup.py` (same), and Z will be
-happy using A and B with whatever version of flask it wants (this specific
-version will be in `requirements.txt`, usually apps don't really need to
-maintain dependencies in both `setup.py` and `requirements.txt`, only
-`requirements.txt` is usually used). Then the developers of A can put whatever
-version of flask they're currently developing against in A's
-`requirements.txt`.
+In a few words, if library `lib1` requires `flask==1.1.1` and library `lib2`
+requires `flask==1.1.2`, then you'll have a conflict and won't be able to use
+them both in application `app`.
+
+Yet in 99.999% of the cases, you don't need a specific version of flask, so:
+
+* `lib1` should just require `flask` in `setup.py` (no version specified, not
+  even with inequality operators: `flask<=2` is bad for instance)
+* `lib2` should just require `flask` in `setup.py` (same)
+
+`app` will be happy using `lib1` and `lib2` with whatever version of `flask` it
+wants.
+
+`app`'s `requirements.txt` should be as specific as possible, ideally
+strictly pinning (`==`) every single dependency. This way the app's stability
+will be very predictable, because always the same packages version will be
+installed.
+
+Usually apps only use `requirements.txt`, not `setup.py`, because `pip install
+-r requirements.txt` is used when deploying.
+
+The only exception for pinning a dependency in a library is in case of a known
+incompatibility, but again this should be a very temporary move, because that
+will prevent people from upgrading.
 
 Ruby has a pretty similar dichotomy with [Gemspec and
 gemfile](http://yehudakatz.com/2010/12/16/clarifying-the-roles-of-the-gemspec-and-gemfile/).
