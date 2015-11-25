@@ -36,6 +36,7 @@ Read those articles first:
 * [setup.py vs.
   requirements.txt](https://caremad.io/2013/07/setup-vs-requirement/)
 * [Pin Your Packagess](http://nvie.com/posts/pin-your-packages/)
+* [Better Package Management](http://nvie.com/posts/better-package-management/)
 
 **Summary: The main point is that `setup.py` should not specify explicit version
 requirements (good: `flask`, bad: `flask==1.1.1`).**
