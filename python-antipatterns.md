@@ -265,3 +265,5 @@ Reference
 * [Python Patterns](https://github.com/faif/python-patterns)
 * [The Little Book of Python
   Anti-Patterns](http://docs.quantifiedcode.com/python-anti-patterns/)
+* [How to make mistakes in
+  Python](http://www.oreilly.com/programming/free/files/how-to-make-mistakes-in-python.pdf)
