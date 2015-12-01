@@ -1,5 +1,4 @@
-Antipatterns
-============
+# Antipatterns
 
 Most of those are antipatterns in the Python programming language, but some of
 them might be more generic.
@@ -513,3 +512,26 @@ def get_user(user_id):
     url = 'http://127.0.0.1/users/%s' % user_id
     return requests.get(url)
 ```
+
+## Unconstrained defensive programming
+
+While defensive programming can be a very good technique to make the code more resilient, it can seriously backfire when misused. This is a very similar anti-pattern to carelessly silencing exceptions (see about this anti-pattern in this document).
+
+One example is to handle an edge case as a generic case at a very low level. Consider the following example:
+
+```python
+def get_user_name(user_id):
+    url = 'http://127.0.0.1/users/%s' % user_id
+    response = requests.get(url)
+    if response.status == 404:
+        return 'unknown'
+    return response.data
+```
+
+While this may look like a very good example of defensive programming (we're returning `unknown` when we can't find the user), this can have terrible repercussions, very similar to the one we have when doing an unrestricted bare `try... except`:
+
+* A new developer might not know about this magical convention, and assume that `get_user_name` is guaranteed to return a true user name.
+* The external service that we're getting user name from might start failing, and returning 404. We would silently return 'unknown' as a user name for all users, which could have terrible repercussions.
+
+A much cleaner way is to raise an exception on 404, and let the caller decide how it wants to handle users that are not found.
+
