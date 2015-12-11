@@ -177,6 +177,7 @@ exception. It's not.
   adds the exception stacktrace to the log message for instance). Silencing an
   exception won't make the error go away: all things being equal, it's better
   for something to break hard, than for an error to be silenced.
+* It is tempting to confound silencing the exception and fixing the exception. Say you're getting sporadic timeouts from a service. You might thing: let's ignore those timeouts and just do something else, like return an empty response. But this is very different from (1) actually finding the root cause for those timeouts (e.g. maybe a specific edge cases impacting certain objects) (2) doing proper graceful degradation (e.g. asking users to retry later because the request failed).
 
 In other words, ask yourself: would it be a problem if every single action was
 failing? If you're silencing the error, how would you know it's happening for
