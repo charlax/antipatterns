@@ -130,8 +130,8 @@ def test_brioche_are_valid_toast():
     assert is_valid(Toast('brioche')) is true
 ```
 
-Bare try... except...
----------------------
+Hiding exceptions
+-----------------
 
 There are multiple variations of this anti-pattern:
 
