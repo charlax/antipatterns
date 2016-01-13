@@ -206,7 +206,7 @@ def main():
         statsd.count('toast.error', 1)
 ```
 
-**Very important**: adding logging and metrics won't not sufficient if it's difficult to consume them. They won't help the developer who's debugging. There needs to be automatic alerting associated to those stats. The logs needs to be surfaced somewhere, ideally next to the higher exception (e.g. let's our `main` function above is used in a web interface - the web interface could say "additionally, the following logs were generated and display the log). Otherwise the developer will still have to read the code to understand what's going on. Also - this won't work with sporadic errors. Those needs to be dealt with properly, and until then, it's better to let them go to your usual alerting tool.
+**Very important**: adding logging and metrics won't not sufficient if it's difficult to consume them. They won't help the developer who's debugging. There needs to be automatic alerting associated to those stats. The logs needs to be surfaced somewhere, ideally next to the higher exception (e.g. let's our `main` function above is used in a web interface - the web interface could say "additionally, the following logs were generated and display the log). For instance, Sentry can be configured to surface `logger.exception` errors the same way exception are surfaced. Otherwise the developer will still have to read the code to understand what's going on. Also - this won't work with sporadic errors. Those needs to be dealt with properly, and until then, it's better to let them go to your usual alerting tool.
 
 Note that knowing where to catch is very important too. If you're catching
 inside the `toast` function, you might be hiding things a caller would need to
