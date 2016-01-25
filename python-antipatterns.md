@@ -258,6 +258,49 @@ TODO
 [Why you should almost never use “is” in
 Python](http://blog.lerner.co.il/why-you-should-almost-never-use-is-in-python/)
 
+Instantiating exception with a dict
+-----------------------------------
+
+Example:
+
+```
+def main():
+    raise Exception({'msg': 'This is not a toaster', 'level': 'error'})
+```
+
+Why is this an antipattern? Exception are meant to be read by human beings.
+Thus, their first argument should be a human-readable error message, like this:
+
+```
+class NotAToasterException(Exception):
+    pass
+
+
+def main():
+    raise NotAToasterException('This is not a toaster')
+```
+
+Most tools expect this, most importantly
+[Sentry](https://getsentry.com/welcome/) which is a tool used to get alerts
+when exception are raised in production. An `Exception`'s message should be
+short so that it can be displayed on a single line.
+
+If you need to attach custom metadata to an exception, the proper way is to
+have a custom constructor:
+
+```
+class NotAToasterException(Exception):
+
+    def __init__(self, message, level):
+        super(NotAToasterException, self).__init__(message)
+        self.message = message
+        self.level = level
+
+
+def main():
+    raise NotAToasterException('This is not a toaster', 'error')
+```
+
 Reference
 ---------
 
@@ -267,3 +310,4 @@ Reference
   Anti-Patterns](http://docs.quantifiedcode.com/python-anti-patterns/)
 * [How to make mistakes in
   Python](http://www.oreilly.com/programming/free/files/how-to-make-mistakes-in-python.pdf)
+G
