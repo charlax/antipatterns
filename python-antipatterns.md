@@ -263,7 +263,7 @@ Instantiating exception with a dict
 
 Example:
 
-```
+```python
 def main():
     raise Exception({'msg': 'This is not a toaster', 'level': 'error'})
 ```
@@ -271,7 +271,7 @@ def main():
 Why is this an antipattern? Exception are meant to be read by human beings.
 Thus, their first argument should be a human-readable error message, like this:
 
-```
+```python
 class NotAToasterException(Exception):
     pass
 
@@ -288,7 +288,7 @@ short so that it can be displayed on a single line.
 If you need to attach custom metadata to an exception, the proper way is to
 have a custom constructor:
 
-```
+```python
 class NotAToasterException(Exception):
 
     def __init__(self, message, level):
