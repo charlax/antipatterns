@@ -158,11 +158,46 @@ def toast(bread):
 
 It depends on the context but in most cases this is a bad pattern:
 
-* **Debugging** those silent errors will be really difficult, because they won't show up in logs and exception reporting tool such as Sentry.
+* **Debugging** those silent errors will be really difficult, because they won't show up in logs and exception reporting tool such as Sentry. Say you have an undefined variable in `Toaster.insert()`: it will raise `NameError`, which will be caught, and ignored, and you will never know about this developer error.
 * **The user experience** will randomly degrade without anybody knowing about it, including the user.
 * **Identifying** those errors will be impossible. Say `do_stuff` does an HTTP request to another service, and that service starts misbehaving. There won't be any exception, any metric that will let you identify it.
 
 An article even named this [the most diabolical Python antipattern](https://realpython.com/blog/python/the-most-diabolical-python-antipattern/).
+
+The following full example:
+
+```python
+from collections import namedtuple
+
+Bread = namedtuple('Bread', 'color')
+
+class ToastException(Exception):
+    pass
+
+def toast(bread):
+    try:
+        put_in_toaster(bread)
+    except:
+        raise ToastException('Could not toast bread')
+
+
+def put_in_toaster(bread):
+    brad.color = 'light_brown'  # Note the typo
+
+
+toast(Bread('yellow'))
+```
+
+Will raise this cryptic and impossible to debug error:
+
+```
+Traceback (most recent call last):
+  File "python-examples/reraise_exceptions.py", line 19, in <module>
+    toast(Bread('yellow'))
+  File "python-examples/reraise_exceptions.py", line 12, in toast
+    raise ToastException('Could not toast bread')
+__main__.ToastException: Could not toast bread
+```
 
 Sometime it's tempting to think that graceful degradation is about silencing
 exception. It's not.

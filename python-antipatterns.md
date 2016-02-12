@@ -144,8 +144,8 @@ Mutable default arguments
 
 TODO
 
-Unnecessarily re-raising exceptions
------------------------------------
+Unnecessarily catching and re-raising exceptions
+------------------------------------------------
 
 Bad:
 
@@ -153,68 +153,13 @@ Bad:
 def toast(bread):
     try:
         put_in_toaster(bread)
-    except:  # or except Exception as e
-        raise ToastException('Could not toast bread')
+    except InvalidBreadException:
+        raise ToastException('Could not toast')
 ```
 
-There's two problems with this implementation:
+Side note: an unconditional exception catching is considered even worse (see [hiding exceptions](https://github.com/charlax/antipatterns/blob/master/code-antipatterns.md#hiding-exceptions)).
 
-* We're unconditionally catching all exceptions without being restrictive.
-  Let's say that `put_in_toaster` is undefined. Instead of giving proper
-  feedback to the developer, we will reraise `ToastException`.
-* We're hiding what's happening in `put_in_toaster`. Let's say there's
-  a programmer error in `put_in_toaster` (for instance, an undefined variable).
-  Instead of getting an immediate feedback, this will be reraised as
-  `ToastException`, and the developer will waste hours trying to find where the
-  exception was raised.
-
-Here's an example `put_in_toaster` implementation. In this case, the typo would
-be hidden by the bare `try... except`:
-
-```python
-def put_in_toaster(bread):
-    breadd.color = 'light_brown'  # Note the typo that would be hidden
-```
-
-The following full example:
-
-```python
-from collections import namedtuple
-
-Bread = namedtuple('Bread', 'color')
-
-class ToastException(Exception):
-    pass
-
-def toast(bread):
-    try:
-        put_in_toaster(bread)
-    except:
-        raise ToastException('Could not toast bread')
-
-
-def put_in_toaster(bread):
-    brad.color = 'light_brown'  # Note the typo
-
-
-toast(Bread('yellow'))
-```
-
-Will raise this cryptic and impossible to debug error:
-
-```
-Traceback (most recent call last):
-  File "python-examples/reraise_exceptions.py", line 19, in <module>
-    toast(Bread('yellow'))
-  File "python-examples/reraise_exceptions.py", line 12, in toast
-    raise ToastException('Could not toast bread')
-__main__.ToastException: Could not toast bread
-```
-
-This simple example will evidently be even more painful in a large codebase.
-
-This is a better pattern because we're very selective about the exception we
-catch:
+This is a better pattern because we explicitly state what happened in the exception message:
 
 ```python
 def toast(bread):
@@ -224,8 +169,7 @@ def toast(bread):
         raise ToastException('Cannot toast this bread type')
 ```
 
-This is another good pattern. Because we're re-raising without a specific
-exception, the full traceback will be kept:
+If we need to do some cleanup or extra logging, it's better to just raise the original exception again. The developer will know exactly what happened.
 
 ```python
 def toast(bread):
@@ -249,6 +193,56 @@ Traceback (most recent call last):
     brad.color = 'light_brown'  # Note the typo
 NameError: global name 'brad' is not defined
 ```
+
+Another way to show how absurd the anti-pattern becomes at scale is through an example:
+
+```python
+def call_1():
+    try:
+        call_2()
+    except Call2Exception:
+        raise Call1Exception()
+
+
+def call_2():
+    try:
+        call_3()
+    except Call3Exception:
+        raise Call2Exception()
+
+
+def call_3():
+    ...
+```
+
+A better way:
+
+```python
+# This is the highest level function where we have enough
+# context to know how to handle the exceptions
+def call_1():
+    try:
+        call_2()
+    except Call2Exception:
+        # handle it...
+        pass
+    except Call3Exception:
+        # handle it...
+        pass
+
+
+def call_2():
+    # Do not handle anything here.
+    call_3()
+
+
+def call_3():
+    ...
+```
+
+More resources:
+
+* [Hiding exceptions](https://github.com/charlax/antipatterns/blob/master/code-antipatterns.md#hiding-exceptions)) anti-pattern.
 
 Using `is` to compare objects
 -----------------------------
