@@ -1,3 +1,21 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Python Antipatterns](#python-antipatterns)
+  - [Redundant type checking](#redundant-type-checking)
+  - [Restricting version in setup.py dependencies](#restricting-version-in-setuppy-dependencies)
+  - [Unwieldy if... else instead of dict](#unwieldy-if-else-instead-of-dict)
+  - [Overreliance on kwargs](#overreliance-on-kwargs)
+  - [Overreliance on list/dict comprehensions](#overreliance-on-listdict-comprehensions)
+  - [Mutable default arguments](#mutable-default-arguments)
+  - [Unnecessarily catching and re-raising exceptions](#unnecessarily-catching-and-re-raising-exceptions)
+  - [Using `is` to compare objects](#using-is-to-compare-objects)
+  - [Instantiating exception with a dict](#instantiating-exception-with-a-dict)
+  - [Reference](#reference)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Python Antipatterns
 ===================
 

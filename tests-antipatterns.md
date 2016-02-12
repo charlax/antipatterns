@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Test antipatterns](#test-antipatterns)
+  - [Testing implementation](#testing-implementation)
+  - [Testing configuration](#testing-configuration)
+  - [Testing multiple things](#testing-multiple-things)
+  - [Repeating integration tests for minor variations](#repeating-integration-tests-for-minor-variations)
+  - [Over-reliance on centralized fixtures](#over-reliance-on-centralized-fixtures)
+  - [Over-reliance on replaying external requests](#over-reliance-on-replaying-external-requests)
+  - [Inefficient query testing](#inefficient-query-testing)
+  - [Assertions in loop](#assertions-in-loop)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Test antipatterns
 =================
 

@@ -1,3 +1,25 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Antipatterns](#antipatterns)
+  - [Strict email validation](#strict-email-validation)
+  - [Late returns](#late-returns)
+  - [Hacks comment](#hacks-comment)
+  - [Repeating arguments in function name](#repeating-arguments-in-function-name)
+  - [Repeating function name in docstring](#repeating-function-name-in-docstring)
+  - [Hiding exceptions](#hiding-exceptions)
+  - [Raising unrelated/unspecific exception](#raising-unrelatedunspecific-exception)
+  - [Unreadable response construction](#unreadable-response-construction)
+  - [Undeterministic tests](#undeterministic-tests)
+  - [Unbalanced boilerplate](#unbalanced-boilerplate)
+  - [Inconsistent use of verbs in functions](#inconsistent-use-of-verbs-in-functions)
+  - [Opaque function arguments](#opaque-function-arguments)
+  - [Hiding formatting](#hiding-formatting)
+  - [Unconstrained defensive programming](#unconstrained-defensive-programming)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Antipatterns
 
 Most of those are antipatterns in the Python programming language, but some of

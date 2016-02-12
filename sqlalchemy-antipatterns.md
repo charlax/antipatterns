@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [SQLAlchemy Anti-Patterns](#sqlalchemy-anti-patterns)
+  - [Abusing lazily loaded relationships](#abusing-lazily-loaded-relationships)
+  - [Explicit session passing](#explicit-session-passing)
+  - [Implicit transaction handling](#implicit-transaction-handling)
+  - [Loading the full object when checking for object existence](#loading-the-full-object-when-checking-for-object-existence)
+  - [Using identity as comparator](#using-identity-as-comparator)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 SQLAlchemy Anti-Patterns
 ========================
 
