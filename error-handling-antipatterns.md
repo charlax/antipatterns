@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+# Table of Contents
+
+- [Error handling anti-patterns](#error-handling-anti-patterns)
+  - [Hiding exceptions](#hiding-exceptions)
+  - [Raising unrelated/unspecific exception](#raising-unrelatedunspecific-exception)
+  - [Unconstrained defensive programming](#unconstrained-defensive-programming)
+  - [Unnecessarily catching and re-raising exceptions](#unnecessarily-catching-and-re-raising-exceptions)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Error handling anti-patterns
 
 Hiding exceptions

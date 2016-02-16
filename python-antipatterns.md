@@ -9,7 +9,6 @@
   - [Overreliance on kwargs](#overreliance-on-kwargs)
   - [Overreliance on list/dict comprehensions](#overreliance-on-listdict-comprehensions)
   - [Mutable default arguments](#mutable-default-arguments)
-  - [Unnecessarily catching and re-raising exceptions](#unnecessarily-catching-and-re-raising-exceptions)
   - [Using `is` to compare objects](#using-is-to-compare-objects)
   - [Instantiating exception with a dict](#instantiating-exception-with-a-dict)
   - [Reference](#reference)
