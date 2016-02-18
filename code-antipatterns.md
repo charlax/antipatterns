@@ -14,6 +14,7 @@
   - [Inconsistent use of verbs in functions](#inconsistent-use-of-verbs-in-functions)
   - [Opaque function arguments](#opaque-function-arguments)
   - [Hiding formatting](#hiding-formatting)
+  - [Returning nothing instead of raising NotFound exception](#returning-nothing-instead-of-raising-notfound-exception)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -372,3 +373,58 @@ def get_user(user_id):
     url = 'http://127.0.0.1/users/%s' % user_id
     return requests.get(url)
 ```
+
+## Returning nothing instead of raising NotFound exception
+
+Bad in certain cases:
+
+```python
+def get_toaster(toaster_id):
+    try:
+        return do_get_toaster(toaster_id)
+    except NotFound:
+        return None
+
+
+def toast(toaster_id):
+    toaster = get_toaster(toaster_id)
+    ...
+    toaster.toast("brioche")
+```
+
+It all depends on the caller, but in this cases I'd argue that it is bad practice to return nothing when the toaster identified by `toaster_id` can't be found, for two main reasons.
+
+**First reason**: when we provide an identifier, we expect it to return something. Once again, this depends on the caller (for instance, we could try to see if a user exists by checking an email for instance). In this simple example it's ok because the `toaster.toast()` will fail immediately, but what if we were never calling it and creating some other unrelated objects? We would be doing things that we should never be doing if the object did not exist:
+
+```python
+def toast(toaster_id, user):
+    toaster = get_toaster(toaster_id)
+    # We should never do this! The toaster might not even exists.
+    send_welcome_email(user)
+    bill_new_toaster(user)
+```
+
+**Second reason**: `toaster.toast` will fail anyway if `toaster` is none (in Python with `AttributeError: NoneType has no attribute toast`). In this abstract example it's ok because the two lines are next to each other, but the actual `toaster.toast()` call might happen further down the stack - and it will be very difficult for the developer to understand where the error is coming from.
+
+```python
+def toast(toaster_id, user):
+    toaster = get_toaster(toaster_id)
+    do_stuff_a(toaster)
+
+
+def do_stuff_a(toaster):
+    ...
+    do_stuff_b(toaster)
+    ...
+
+
+def do_stuff_b(toaster):
+    # Here is the actual call where toaster is called - but we should
+    # have failed early if it's not there.
+    toaster.toast()
+```
+
+What's the correct things to do?
+
+* If you expect the object to be there, make sure to raise if you don't find it.
+* If you're using SQLAlchemy, use `one()` to force raising an exception if the object can't be found. Don't use `first` or `one_or_none()`.

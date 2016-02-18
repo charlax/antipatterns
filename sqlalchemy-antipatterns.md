@@ -8,6 +8,7 @@
   - [Implicit transaction handling](#implicit-transaction-handling)
   - [Loading the full object when checking for object existence](#loading-the-full-object-when-checking-for-object-existence)
   - [Using identity as comparator](#using-identity-as-comparator)
+  - [Returning `None` instead of raising a `NoResultFound` exception](#returning-none-instead-of-raising-a-noresultfound-exception)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -169,3 +170,7 @@ toasters = session.query(Toaster).filter(Toaster.deleted_at.is_(None)).all()
 
 See docs for
 [is_](http://docs.sqlalchemy.org/en/rel_1_0/core/sqlelement.html#sqlalchemy.sql.operators.ColumnOperators.is_).
+
+## Returning `None` instead of raising a `NoResultFound` exception
+
+See []().
