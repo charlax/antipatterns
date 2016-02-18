@@ -173,4 +173,4 @@ See docs for
 
 ## Returning `None` instead of raising a `NoResultFound` exception
 
-See []().
+See [Returning nothing instead of raising NotFound exception](https://github.com/charlax/antipatterns/blob/master/code-antipatterns.md#returning-nothing-instead-of-raising-notfound-exception).
