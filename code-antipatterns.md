@@ -362,9 +362,7 @@ def get_url(user_id):
     return 'http://127.0.0.1/users/%s' % user_id
 ```
 
-I consider this an antipattern because it hides the request formatting from the
-developer, making it more complex to see what `url` look like. In this extreme
-example, the formatting function is a one-liner which sounds a bit overkill for
+I consider this an antipattern because it hides the request formatting from the developer, making it more complex to see what `url` look like. In this extreme example, the formatting function is a one-liner which sounds a bit overkill for
 a function.
 
 Good:
@@ -374,6 +372,11 @@ def get_user(user_id):
     url = 'http://127.0.0.1/users/%s' % user_id
     return requests.get(url)
 ```
+
+Even if you were duplicating the logic once or twice it might still be fine, because:
+
+* You're unlikely to re-use anywhere else outside this file.
+* Putting this inline makes it easier for follow the flow. Code is written to be read primarily by computers.
 
 ## Returning nothing instead of raising NotFound exception
 
