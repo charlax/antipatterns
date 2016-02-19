@@ -15,6 +15,7 @@
   - [Opaque function arguments](#opaque-function-arguments)
   - [Hiding formatting](#hiding-formatting)
   - [Returning nothing instead of raising NotFound exception](#returning-nothing-instead-of-raising-notfound-exception)
+  - [Having a library that contains all utils](#having-a-library-that-contains-all-utils)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -428,3 +429,24 @@ What's the correct things to do?
 
 * If you expect the object to be there, make sure to raise if you don't find it.
 * If you're using SQLAlchemy, use `one()` to force raising an exception if the object can't be found. Don't use `first` or `one_or_none()`.
+
+## Having a library that contains all utils
+
+Bad:
+
+```python
+def get_current_date():
+    ...
+
+
+def create_csv(...):
+    ...
+
+
+def upload_to_sftp(...):
+    ...
+```
+
+`util` or `tools` or `lib` modules that contain all sorts of utilities have a tendency to become bloated and unmaintainable. Prefer to have small, dedicated files. 
+
+This will keep your imports logical (`lib.date_utils`, `lib.csv_utils`, `lib.sftp`), make it easier for the reader to identify all the utilities around a specific topic, and test files easy to keep organized.
