@@ -212,8 +212,38 @@ def main():
     raise NotAToasterException('This is not a toaster', 'error')
 ```
 
-Reference
----------
+## Not strictly pinning all packages
+
+Example of bad `requirements.txt` file:
+
+```
+sqlalchemy
+flask
+```
+
+Another example of a bad `requirements.txt` file:
+
+```
+sqlalchemy>=0.9
+flask>0.10
+```
+
+Good:
+
+```
+Flask==0.10.1
+Jinja2==2.8
+MarkupSafe==0.23
+SQLAlchemy==1.0.12
+Werkzeug==0.11.4
+itsdangerous==0.24
+```
+
+This ensures that there's absolutely no ambiguity as to which package will be installed on production. If you forget to mention even a single package, you will perhaps have a different version on your testing/dev environment, and in your production environment.
+
+The proper way to update a package and its dependency is to use another tool, for instance [pip-tools](https://github.com/nvie/pip-tools). If you have multiple applications and you want to mass update a package, then you'll have to write a script to do so. Keep things simple and explicit, then use scripts on top of it to instrument your processes.
+
+# Reference
 
 * [Pythonic Pitfalls](http://nafiulis.me/potential-pythonic-pitfalls.html)
 * [Python Patterns](https://github.com/faif/python-patterns)
