@@ -11,7 +11,8 @@
   - [Mutable default arguments](#mutable-default-arguments)
   - [Using `is` to compare objects](#using-is-to-compare-objects)
   - [Instantiating exception with a dict](#instantiating-exception-with-a-dict)
-  - [Reference](#reference)
+  - [Not strictly pinning all packages](#not-strictly-pinning-all-packages)
+- [Reference](#reference)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -52,7 +53,7 @@ Read those articles first:
 
 * [setup.py vs.
   requirements.txt](https://caremad.io/2013/07/setup-vs-requirement/)
-* [Pin Your Packagess](http://nvie.com/posts/pin-your-packages/)
+* [Pin Your Packages](http://nvie.com/posts/pin-your-packages/)
 * [Better Package Management](http://nvie.com/posts/better-package-management/)
 
 **Summary: The main point is that `setup.py` should not specify explicit version
@@ -242,6 +243,10 @@ itsdangerous==0.24
 This ensures that there's absolutely no ambiguity as to which package will be installed on production. If you forget to mention even a single package, you will perhaps have a different version on your testing/dev environment, and in your production environment.
 
 The proper way to update a package and its dependency is to use another tool, for instance [pip-tools](https://github.com/nvie/pip-tools). If you have multiple applications and you want to mass update a package, then you'll have to write a script to do so. Keep things simple and explicit, then use scripts on top of it to instrument your processes.
+
+**Reference**
+
+* [Pin Your Packages](http://nvie.com/posts/pin-your-packages/)
 
 # Reference
 
