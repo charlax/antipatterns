@@ -7,6 +7,7 @@
   - [Late returns](#late-returns)
   - [Hacks comment](#hacks-comment)
   - [Repeating arguments in function name](#repeating-arguments-in-function-name)
+  - [Repeating class name in method name](#repeating-class-name-in-method-name)
   - [Repeating function name in docstring](#repeating-function-name-in-docstring)
   - [Unreadable response construction](#unreadable-response-construction)
   - [Undeterministic tests](#undeterministic-tests)
@@ -99,8 +100,7 @@ toaster.restart()
   nice with most text editors.
 * The perceived quality of this temporary fix is much higher.
 
-Repeating arguments in function name
-------------------------------------
+## Repeating arguments in function name
 
 Bad:
 
@@ -118,6 +118,32 @@ Good:
 def get(color=None):
     if color:
         return Toasters.filter_by(color=color)
+```
+
+## Repeating class name in method name
+
+Bad:
+
+```python
+class Toasters(object):
+    def get_toaster(self, toaster_id):
+        pass
+```
+
+This is bad because it's unnecessarily redundant (`Toasters.get_toaster(1)`). According to the single responsibility principle, a class should focus on one area of responsibility. So the `Toasters` class should only focus on toasters object.
+
+Good:
+
+```python
+class Toasters(object):
+    def get(self, toaster_id):
+        pass
+```
+
+Which produces much more concise code:
+
+```
+toaster = Toasters.get(1)
 ```
 
 Repeating function name in docstring
