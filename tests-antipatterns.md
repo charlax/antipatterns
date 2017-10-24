@@ -11,6 +11,7 @@
   - [Over-reliance on replaying external requests](#over-reliance-on-replaying-external-requests)
   - [Inefficient query testing](#inefficient-query-testing)
   - [Assertions in loop](#assertions-in-loop)
+  - [Inverted testing pyramid](#inverted-testing-pyramid)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -153,3 +154,27 @@ def test_find():
 This is also a matter of tradeoff, but in most cases I'd try to make sure the
 list contains only one item. If we're checking more than one item, that hints
 at our test trying to do too many things.
+
+## Inverted testing pyramid
+
+![Test Pyramid](images/test_pyramid.png)
+
+*The [test pyramid](https://martinfowler.com/bliki/TestPyramid.html). Image courtesy of Martin Fowler.*
+
+Building lots of automated comprehensive end-to-end tests was tried multiple time, and almost never worked.
+
+* End to end tests try to do too many things, are highly indeterministic and as a result very flakey.
+* Debugging end to end tests failure is painful and slow - this is usually where most of the time is wasted.
+* Building and maintaining e2e tests is very costly.
+* The time to run e2e tests is much much longer than unit tests.
+
+Focused testing (e.g. unit, component, etc) prior to roll out, and business monitoring with alerting are much more efficient.
+
+More reading on this topic:
+
+* [End-To-End Testing Considered Harmful](http://www.alwaysagileconsulting.com/articles/end-to-end-testing-considered-harmful/), Always Agile Consulting
+* [Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html), Google Testing Blog
+* [Testing Strategies in a Microservice Architecture](https://martinfowler.com/articles/microservice-testing/#testing-end-to-end-tips), section titled "Writing and maintaining end-to-end tests can be very difficult", Toby Clemson, MartinFowler.com
+* [Introducing the software testing ice-cream cone (anti-pattern)](https://watirmelon.blog/2012/01/31/introducing-the-software-testing-ice-cream-cone/), Alister Scott
+* [TestPyramid](https://martinfowler.com/bliki/TestPyramid.html), Martin Fowler
+* [professional-programming's testing section](https://github.com/charlax/professional-programming#testing)
