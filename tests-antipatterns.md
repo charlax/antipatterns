@@ -157,7 +157,7 @@ at our test trying to do too many things.
 
 ## Inverted testing pyramid
 
-![Test Pyramid](images/test_pyramid.png)
+![Test Pyramid](/images/test_pyramid.png)
 
 *The [test pyramid](https://martinfowler.com/bliki/TestPyramid.html). Image courtesy of Martin Fowler.*
 
